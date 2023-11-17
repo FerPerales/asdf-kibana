@@ -39,7 +39,7 @@ download_release() {
 	operative_system="$(uname -a)"
 
 	if [[ "$operative_system" =~ "Darwin" ]]; then
-		if [ "$(version "$version")" -ge "$(version "7.16.0")" ]; then
+		if [ "$(version "$version")" -lt "$(version "7.16.0")" ]; then
 			if [[ "$arch" == "i386" ]]; then
 				kibana_version="${version}-darwin-x86_64"
 			else
@@ -72,7 +72,6 @@ install_version() {
 		mkdir -p "$install_path"
 		cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
 
-		# TODO: Assert kibana executable exists.
 		local tool_cmd
 		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
 		chmod +x "$install_path/$tool_cmd"
