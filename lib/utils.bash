@@ -59,6 +59,12 @@ download_release() {
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
 }
 
+# From https://github.com/asdf-community/asdf-elasticsearch/blob/3b57cc541b64a09cf0b95543457471fbe803abbb/bin/install#L78
+version() {
+	echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'
+}
+
+
 install_version() {
 	local install_type="$1"
 	local version="$2"
