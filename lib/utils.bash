@@ -41,8 +41,8 @@ download_release() {
 
 
 	if [[ "$operative_system" =~ "Darwin" ]]; then
-		if [ $(version $version) -ge $(version "7.16.0") ]; then
-			if [ "$arch" == "i386"]; then
+		if [ "$(version "$version")" -ge "$(version "7.16.0")" ]; then
+			if [[ "$arch" == "i386" ]]; then
 				kibana_version="${version}-darwin-x86_64"
 			else
 				kibana_version="${version}-aarch64"
