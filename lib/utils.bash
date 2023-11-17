@@ -83,8 +83,9 @@ install_version() {
 		test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
 
 		echo "$TOOL_NAME $version installation was successful!"
-	) || (
-		rm -rf "$install_path"
-		fail "An error occurred while installing $TOOL_NAME $version."
 	)
+	# ) || (
+		# rm -rf "$install_path"
+		# fail "An error occurred while installing $TOOL_NAME $version."
+	# )
 }
