@@ -35,10 +35,8 @@ download_release() {
 	local version filename url arch operative_system kibana_version
 	version="$1"
 	filename="$2"
-
 	arch="$(uname -p)"
 	operative_system="$(uname -a)"
-
 
 	if [[ "$operative_system" =~ "Darwin" ]]; then
 		if [ "$(version "$version")" -ge "$(version "7.16.0")" ]; then
@@ -77,6 +75,7 @@ install_version() {
 		# TODO: Assert kibana executable exists.
 		local tool_cmd
 		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
+		chmod +x "$install_path/$tool_cmd"
 		test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
 
 		echo "$TOOL_NAME $version installation was successful!"
