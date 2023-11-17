@@ -5,6 +5,7 @@ set -euo pipefail
 GH_REPO="https://github.com/elastic/kibana"
 TOOL_NAME="kibana"
 TOOL_TEST="kibana --help"
+MULTIPLE_ARCH_VERSION="7.16.0"
 
 fail() {
 	echo -e "asdf-$TOOL_NAME: $*"
@@ -31,12 +32,30 @@ list_all_versions() {
 }
 
 download_release() {
-	local version filename url
+	local version filename url arch operative_system kibana_version
 	version="$1"
 	filename="$2"
 
-	# TODO: Adapt the release URL convention for kibana
-	url="$GH_REPO/archive/v${version}.tar.gz"
+	arch="$(uname -p)"
+	operative_system="$(uname -a)"
+
+
+	if [ "$operating_system" =~ "Darwin" ]; then
+		if [ $(version $version) -ge $(version "7.16.0") ]; then
+			if [ "$arch" == "i386"]; then
+				kibana_version="${version}-darwin-x86_64"
+			else
+				kibana_version="${version}-aarch64"
+			fi
+		else
+			echo "Kibana versions prior to $MULTIPLE_ARCH_VERSION do not offer an ARM-specific build. Using x86_64..."
+			kibana_version="${version}-darwin-x86_64"
+		fi
+	else
+		fail "asdf-$TOOL_NAME only supports MacOS at the moment"
+	fi
+
+	url="https://artifacts.elastic.co/downloads/kibana/kibana-${kibana_version}.tar.gz"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
